@@ -19,7 +19,7 @@ const AppProvider = ({ children }) => {
       } else {
         setIsError({
           show: true,
-          msg: data.error,
+          msg: data.Error,
         })
       }
     } catch (error) {
@@ -28,8 +28,10 @@ const AppProvider = ({ children }) => {
     }
   }
   useEffect(() => {
-    getMovies(`${API_URL}&s=${query}`);
-
+    var timerOut=setTimeout(() => {//Debouncing effect
+      getMovies(`${API_URL}&s=${query}`);
+    }, 500);
+    return ()=>clearTimeout(timerOut);//cleanup function will now return only one value instead of returning value after every word
   }, [query])
 
   return <AppContext.Provider value={{ isLoading, isError, movie,query,setQuery }} >{children}</AppContext.Provider>
